@@ -296,6 +296,7 @@ nav a:hover{color:var(--bone)}
 footer{border-top:1px solid var(--line)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:28px;font-family:var(--f-mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim)}
 </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="dfffeeb4-268d-4784-bcd9-68033867c0e4" data-domains="ceres-band.netlify.app"></script>
 </head>
 <body style="margin:0">
 <header class="top">
@@ -679,6 +680,33 @@ document.querySelectorAll('.clip').forEach(function(c){
     var done=function(){ok.hidden=false;setTimeout(function(){ok.hidden=true},1800)};
     try{navigator.clipboard.writeText(mail.textContent.trim()).then(done,selectText);}catch(e){selectText();}
   });
+})();
+</script>
+<script>
+/* Estadísticas (Umami, sin cookies): qué botones se pulsan y qué apartados se abren */
+(function(){
+  function t(n,d){try{if(window.umami)window.umami.track(n,d||{});}catch(e){}}
+  function sec(el){var s=el.closest('[data-view],header,footer');return s?(s.getAttribute('data-view')||s.tagName.toLowerCase()):'';}
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a,button');if(!a)return;
+    var h=a.getAttribute('href')||'',name=null,data={apartado:sec(a)};
+    if(a.classList.contains('clip-play'))name='Videoclip: '+(a.getAttribute('aria-label')||'').replace('Reproducir el videoclip de ','');
+    else if(a.id==='copy')name='Copiar correo';
+    else if(a.classList.contains('dl')){var s=a.parentNode.querySelector('summary');name='Descargar letra';data.cancion=s?s.textContent:'';}
+    else if(/^#[a-z]+$/.test(h)){name='Apartado: '+h.slice(1);data.desde=a.closest('.tiles')?'accesos':a.closest('.menu-panel,.inline-nav')?'menu':'enlace';}
+    else if(/bandcamp\.com\/album/.test(h))name='Bandcamp: El mundo arde';
+    else if(/bandcamp\.com\/merch\/camiseta-logo/.test(h))name='Bandcamp: camiseta logo';
+    else if(/bandcamp\.com\/merch\/camiseta-alcachofa/.test(h))name='Bandcamp: camiseta alcachofa';
+    else if(/bandcamp\.com/.test(h))name='Bandcamp';
+    else if(/spotify\.com/.test(h))name='Spotify';
+    else if(/instagram\.com\/ceres\.band/.test(h))name='Instagram CERES';
+    else if(/instagram\.com\/lxrdbayron/.test(h))name='Instagram Byron';
+    else if(/youtube\.com/.test(h))name='YouTube';
+    else if(/^mailto:/.test(h))name='Correo';
+    else if(/^https?:/.test(h)&&a.closest('#conciertos'))name=/entrad/i.test(a.textContent)?'Entradas':'Más información concierto';
+    else if(/^https?:/.test(h))name='Enlace externo';
+    if(name){if(/^https?:/.test(h))data.url=h;t(name,data);}
+  },true);
 })();
 </script>
 </body>
